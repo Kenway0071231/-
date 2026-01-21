@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YandexGPT - Помощник для Telegram Mini App</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>YandexGPT для Telegram Mini App</title>
     <style>
         * {
             margin: 0;
@@ -12,127 +11,105 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --primary: #667eea;
-            --primary-dark: #5a67d8;
-            --secondary: #764ba2;
-            --light: #f8f9fa;
-            --dark: #2c3e50;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --border: #e5e7eb;
-            --code-bg: #1e1e1e;
-        }
-
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: #333;
-            line-height: 1.6;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 10px;
+            padding: 20px;
+            color: #333;
         }
 
         .container {
-            max-width: 100%;
+            max-width: 1400px;
             margin: 0 auto;
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 20px 80px rgba(0,0,0,0.3);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            height: calc(100vh - 20px);
+            height: calc(100vh - 40px);
         }
 
         header {
             background: linear-gradient(135deg, #1a237e 0%, #283593 100%);
             color: white;
-            padding: 20px;
+            padding: 25px;
             text-align: center;
-            flex-shrink: 0;
         }
 
         header h1 {
-            font-size: 2rem;
-            margin-bottom: 8px;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-        }
-
-        .subtitle {
-            font-size: 1rem;
-            opacity: 0.9;
+            gap: 15px;
         }
 
         .main-content {
             display: flex;
             flex: 1;
-            min-height: 0;
             padding: 0;
+            min-height: 0;
         }
 
-        .input-panel, .output-panel {
+        .panel {
             flex: 1;
+            padding: 25px;
             display: flex;
             flex-direction: column;
-            padding: 20px;
-            overflow: hidden;
         }
 
         .input-panel {
-            border-right: 2px solid var(--border);
+            border-right: 2px solid #e5e7eb;
         }
 
         .panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            flex-shrink: 0;
+            margin-bottom: 20px;
         }
 
         .panel-header h2 {
-            color: var(--dark);
-            font-size: 1.2rem;
+            color: #1a237e;
+            font-size: 1.4rem;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
-        .controls {
+        .config-box {
+            background: #f0f9ff;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3b82f6;
+        }
+
+        .config-box h3 {
+            color: #1e40af;
+            margin-bottom: 15px;
             display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .config-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #93c5fd;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 14px;
         }
 
         .textarea-container {
             flex: 1;
             display: flex;
             flex-direction: column;
-            min-height: 0;
-            border: 2px solid var(--border);
+            border: 2px solid #e5e7eb;
             border-radius: 12px;
             overflow: hidden;
-            background: var(--light);
-        }
-
-        .textarea-header {
-            background: white;
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .char-count {
-            font-size: 0.85rem;
-            color: #6b7280;
-            font-family: monospace;
         }
 
         textarea {
@@ -142,153 +119,93 @@
             border: none;
             font-size: 16px;
             resize: none;
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-family: 'Consolas', monospace;
             line-height: 1.5;
-            background: transparent;
-            min-height: 200px;
+            background: #f8fafc;
         }
 
         textarea:focus {
             outline: none;
+            background: white;
         }
 
-        .output-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-            background: var(--light);
-            border-radius: 12px;
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            line-height: 1.5;
-            border: 2px solid var(--border);
-            min-height: 300px;
-        }
-
-        .output-content::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .output-content::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-
-        .output-content::-webkit-scrollbar-thumb {
-            background: #c1c1c1;
-            border-radius: 4px;
-        }
-
-        .output-content::-webkit-scrollbar-thumb:hover {
-            background: #a8a8a8;
-        }
-
-        .code-block {
-            background: var(--code-bg);
-            color: #f8f8f2;
-            padding: 16px;
-            border-radius: 8px;
-            margin: 12px 0;
-            overflow-x: auto;
-            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
-        }
-
-        .code-block::-webkit-scrollbar {
-            height: 6px;
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 14px 28px;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 500;
+            font-size: 16px;
+            font-weight: 600;
             transition: all 0.2s;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            white-space: nowrap;
+            gap: 10px;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
             color: white;
+            flex: 1;
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
         }
 
         .btn-secondary {
-            background: var(--light);
-            color: var(--dark);
-            border: 1px solid var(--border);
+            background: #f1f5f9;
+            color: #475569;
+            border: 1px solid #cbd5e1;
         }
 
         .btn-secondary:hover {
-            background: #e5e7eb;
+            background: #e2e8f0;
         }
 
-        .btn-success {
-            background: var(--success);
-            color: white;
+        .output-content {
+            flex: 1;
+            background: #f8fafc;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 25px;
+            overflow-y: auto;
+            font-family: 'Consolas', monospace;
+            white-space: pre-wrap;
+            line-height: 1.6;
         }
 
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-icon {
-            width: 40px;
-            height: 40px;
-            padding: 8px;
-        }
-
-        .preset-buttons {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-
-        .preset-btn {
-            padding: 10px 16px;
-            background: #f3f4f6;
-            border: 1px solid #d1d5db;
+        .code-block {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
             border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .preset-btn:hover {
-            background: #e5e7eb;
-            transform: translateY(-1px);
+            margin: 15px 0;
+            overflow-x: auto;
         }
 
         .status-bar {
-            margin-top: 15px;
-            padding: 12px;
-            background: #f3f4f6;
-            border-radius: 8px;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f1f5f9;
+            border-radius: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-shrink: 0;
         }
 
-        .status-indicator {
+        .status {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             font-size: 14px;
         }
 
@@ -296,277 +213,59 @@
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            display: inline-block;
         }
 
-        .status-idle .status-dot { background: var(--success); }
-        .status-loading .status-dot { background: var(--warning); }
-        .status-error .status-dot { background: var(--danger); }
+        .status-connected .status-dot { background: #10b981; }
+        .status-disconnected .status-dot { background: #ef4444; }
+        .status-loading .status-dot { background: #f59e0b; }
 
-        .token-info {
-            font-family: monospace;
-            font-size: 13px;
-            color: #6b7280;
-        }
-
-        .actions-bottom {
-            margin-top: 15px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .actions-bottom .btn {
-            flex: 1;
-            min-width: 120px;
-        }
-
-        .toast {
+        .message {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #374151;
+            bottom: 30px;
+            right: 30px;
+            padding: 15px 25px;
+            border-radius: 10px;
             color: white;
-            padding: 16px 24px;
-            border-radius: 12px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 1000;
             transform: translateY(100px);
             opacity: 0;
             transition: all 0.3s;
-            z-index: 1000;
-            max-width: 400px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
         }
 
-        .toast.show {
+        .message.show {
             transform: translateY(0);
             opacity: 1;
         }
 
-        .toast-success { background: var(--success); }
-        .toast-error { background: var(--danger); }
-        .toast-warning { background: var(--warning); }
-
-        .history-panel {
-            position: fixed;
-            right: -400px;
-            top: 0;
-            width: 400px;
-            height: 100vh;
-            background: white;
-            box-shadow: -5px 0 30px rgba(0,0,0,0.1);
-            transition: right 0.3s;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .history-panel.show {
-            right: 0;
-        }
-
-        .history-header {
-            padding: 20px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .history-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
-
-        .history-item {
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            border: 1px solid var(--border);
-            transition: all 0.2s;
-        }
-
-        .history-item:hover {
-            background: #f3f4f6;
-            border-color: var(--primary);
-        }
-
-        .history-item .query {
-            font-weight: 500;
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .history-item .date {
-            font-size: 12px;
-            color: #6b7280;
-        }
-
-        .overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0,0,0,0.5);
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s;
-            z-index: 999;
-        }
-
-        .overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .ai-model-selector {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: var(--light);
-            border-radius: 8px;
-            font-size: 14px;
-        }
-
-        .ai-model-selector select {
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            padding: 4px 8px;
-            background: white;
-            font-family: monospace;
-        }
-
-        .proxy-selector {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            padding: 8px 16px;
-            background: #f0f9ff;
-            border-radius: 8px;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-
-        .proxy-selector select {
-            border: 1px solid #93c5fd;
-            border-radius: 4px;
-            padding: 4px 8px;
-            background: white;
-            font-family: monospace;
-            min-width: 200px;
-        }
+        .message-success { background: #10b981; }
+        .message-error { background: #ef4444; }
+        .message-info { background: #3b82f6; }
 
         @media (max-width: 1200px) {
             .main-content {
                 flex-direction: column;
             }
-            
             .input-panel {
                 border-right: none;
-                border-bottom: 2px solid var(--border);
-                min-height: 40vh;
-            }
-            
-            .output-panel {
-                min-height: 50vh;
+                border-bottom: 2px solid #e5e7eb;
             }
         }
 
         @media (max-width: 768px) {
             .container {
-                height: calc(100vh - 10px);
-                border-radius: 12px;
+                height: auto;
+                min-height: 100vh;
             }
-            
-            header h1 {
-                font-size: 1.5rem;
+            .panel {
+                padding: 15px;
             }
-            
-            .panel-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-            
-            .controls {
-                width: 100%;
-                justify-content: flex-start;
-            }
-            
-            .preset-buttons {
+            .button-group {
                 flex-direction: column;
             }
-            
-            .actions-bottom .btn {
-                flex: none;
+            .btn {
                 width: 100%;
             }
-            
-            .history-panel {
-                width: 100%;
-                right: -100%;
-            }
-        }
-
-        .spinner {
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top: 3px solid white;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .highlight {
-            background: #fff3cd;
-            padding: 2px 4px;
-            border-radius: 3px;
-        }
-
-        .tip {
-            background: #e8f5e9;
-            border-left: 4px solid var(--success);
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 0 8px 8px 0;
-            font-size: 14px;
-        }
-
-        .config-section {
-            background: #f0f9ff;
-            padding: 20px;
-            border-radius: 12px;
-            margin: 20px;
-        }
-
-        .config-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #93c5fd;
-            border-radius: 6px;
-            margin: 8px 0;
-            font-family: monospace;
-        }
-
-        .config-section h3 {
-            color: #1e40af;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
     </style>
 </head>
@@ -574,102 +273,54 @@
     <div class="container">
         <header>
             <h1>
-                <i class="fas fa-robot"></i>
-                YandexGPT - Telegram Developer Assistant
+                <i class="fas fa-robot" style="font-size: 2.5rem;"></i>
+                YandexGPT для Telegram разработки
             </h1>
-            <p class="subtitle">Без CORS ограничений | Работает через прокси | Без лимитов на запросы</p>
+            <p>Локальный прокси-сервер | Без CORS ограничений</p>
         </header>
 
-        <!-- Секция конфигурации -->
-        <div class="config-section">
-            <h3><i class="fas fa-cogs"></i> Настройка подключения</h3>
-            <div class="proxy-selector">
-                <label><i class="fas fa-server"></i> Выберите прокси:</label>
-                <select id="proxySelect">
-                    <option value="cors-anywhere">CORS Anywhere (рекомендуется)</option>
-                    <option value="allorigins">AllOrigins Proxy</option>
-                    <option value="proxycurl">ProxyCurl</option>
-                    <option value="direct">Прямое подключение (для localhost)</option>
-                </select>
-            </div>
-            
-            <div style="margin-top: 15px;">
-                <label><i class="fas fa-key"></i> Ваши API данные (уже настроены):</label>
-                <input type="text" class="config-input" value="b1gem6hvga1n872g5iug" readonly>
-                <small>Folder ID (только для информации, нельзя изменить)</small>
-            </div>
-            
-            <button class="btn btn-primary" id="testConnection" style="margin-top: 15px;">
-                <i class="fas fa-plug"></i> Тест подключения
-            </button>
-            
-            <div id="connectionStatus" style="margin-top: 10px;"></div>
-        </div>
-
         <div class="main-content">
-            <!-- Левая панель: Ввод -->
-            <div class="input-panel">
-                <div class="panel-header">
-                    <h2><i class="fas fa-edit"></i> Введите ваш запрос</h2>
-                    <div class="controls">
-                        <div class="ai-model-selector">
-                            <i class="fas fa-brain"></i>
-                            <select id="modelSelect">
-                                <option value="yandexgpt-lite" selected>YandexGPT Lite</option>
-                                <option value="yandexgpt">YandexGPT Pro</option>
-                            </select>
-                        </div>
-                        <button class="btn btn-secondary btn-icon" id="clearInput" title="Очистить">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                        <button class="btn btn-secondary btn-icon" id="historyBtn" title="История запросов">
-                            <i class="fas fa-history"></i>
-                        </button>
+            <!-- Левая панель -->
+            <div class="panel input-panel">
+                <div class="config-box">
+                    <h3><i class="fas fa-server"></i> Настройки подключения</h3>
+                    <p><strong>Ваши данные Yandex Cloud:</strong></p>
+                    <input type="text" class="config-input" value="b1gem6hvga1n872g5iug" readonly id="folderId">
+                    <small>Folder ID (автоподставлено)</small>
+                    
+                    <div style="margin-top: 15px;">
+                        <label><strong>URL локального прокси:</strong></label>
+                        <input type="text" class="config-input" value="http://localhost:3000/proxy" id="proxyUrl">
+                        <small>Запустите Python скрипт и обновите страницу</small>
                     </div>
+                    
+                    <button class="btn btn-primary" id="testBtn" style="margin-top: 15px;">
+                        <i class="fas fa-plug"></i> Проверить подключение
+                    </button>
+                </div>
+
+                <div class="panel-header">
+                    <h2><i class="fas fa-edit"></i> Ваш запрос</h2>
                 </div>
 
                 <div class="textarea-container">
-                    <div class="textarea-header">
-                        <span>Запрос (без ограничений!)</span>
-                        <span class="char-count" id="charCount">0 символов</span>
-                    </div>
-                    <textarea 
-                        id="userInput" 
-                        placeholder="Введите ваш запрос о разработке Telegram Mini App...
-                        
-Можете вставлять огромные куски кода (10000+ строк)!
-Система обработает любой объем текста!
+                    <textarea id="userInput" placeholder="Введите ваш запрос по разработке Telegram Mini App...
 
-Примеры огромных запросов:
-• Вставьте полный код вашего проекта для анализа
-• Запросите полную архитектурную документацию
-• Получите оптимизацию для большого кодовой базы" rows="20"></textarea>
+Пример:
+1. Как создать кнопки в интерфейсе?
+2. Напиши код обработки платежей
+3. Создай архитектуру для 100к пользователей
+4. Оптимизируй этот код: [вставьте код]
+
+Можно вставлять большие объемы кода!"></textarea>
                 </div>
 
-                <div class="preset-buttons">
-                    <button class="preset-btn" data-preset="architecture">
-                        <i class="fas fa-sitemap"></i> Архитектура
+                <div class="button-group">
+                    <button class="btn btn-secondary" id="clearBtn">
+                        <i class="fas fa-trash"></i> Очистить
                     </button>
-                    <button class="preset-btn" data-preset="database">
-                        <i class="fas fa-database"></i> База данных
-                    </button>
-                    <button class="preset-btn" data-preset="payment">
-                        <i class="fas fa-credit-card"></i> Платежи
-                    </button>
-                    <button class="preset-btn" data-preset="scalability">
-                        <i class="fas fa-server"></i> Масштабирование
-                    </button>
-                    <button class="preset-btn" data-preset="security">
-                        <i class="fas fa-shield-alt"></i> Безопасность
-                    </button>
-                </div>
-
-                <div class="actions-bottom">
                     <button class="btn btn-secondary" id="pasteBtn">
-                        <i class="fas fa-paste"></i> Вставить
-                    </button>
-                    <button class="btn btn-success" id="formatBtn">
-                        <i class="fas fa-code"></i> Форматировать
+                        <i class="fas fa-paste"></i> Вставить код
                     </button>
                     <button class="btn btn-primary" id="sendBtn">
                         <i class="fas fa-paper-plane"></i> Отправить в YandexGPT
@@ -677,646 +328,220 @@
                 </div>
 
                 <div class="status-bar">
-                    <div class="status-indicator status-idle" id="statusIndicator">
+                    <div class="status status-disconnected" id="status">
                         <span class="status-dot"></span>
-                        <span id="statusText">Готов к работе</span>
+                        <span id="statusText">Ожидание подключения</span>
                     </div>
-                    <div class="token-info" id="tokenInfo">
-                        Токены: ~0
-                    </div>
+                    <div id="charCount">0 символов</div>
                 </div>
             </div>
 
-            <!-- Правая панель: Ответ -->
-            <div class="output-panel">
+            <!-- Правая панель -->
+            <div class="panel">
                 <div class="panel-header">
                     <h2><i class="fas fa-code"></i> Ответ от YandexGPT</h2>
-                    <div class="controls">
-                        <button class="btn btn-secondary btn-icon" id="copyOutput" title="Копировать ответ">
-                            <i class="far fa-copy"></i>
+                    <div class="button-group" style="margin: 0;">
+                        <button class="btn btn-secondary" id="copyBtn">
+                            <i class="fas fa-copy"></i> Копировать
                         </button>
-                        <button class="btn btn-secondary btn-icon" id="clearOutput" title="Очистить ответ">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                        <button class="btn btn-secondary btn-icon" id="expandOutput" title="Развернуть на полный экран">
-                            <i class="fas fa-expand"></i>
+                        <button class="btn btn-secondary" id="saveBtn">
+                            <i class="fas fa-download"></i> Сохранить
                         </button>
                     </div>
                 </div>
 
-                <div class="output-content" id="output"></div>
-
-                <div class="actions-bottom">
-                    <button class="btn btn-secondary" id="saveResponseBtn">
-                        <i class="fas fa-save"></i> Сохранить ответ
-                    </button>
-                    <button class="btn btn-secondary" id="exportBtn">
-                        <i class="fas fa-download"></i> Экспорт в .txt
-                    </button>
-                    <button class="btn btn-primary" id="continueBtn" style="display: none;">
-                        <i class="fas fa-forward"></i> Продолжить ответ
-                    </button>
+                <div class="output-content" id="output">
+                    <div style="text-align: center; color: #64748b; padding: 40px;">
+                        <i class="fas fa-comment-alt" style="font-size: 3rem; margin-bottom: 20px;"></i>
+                        <h3>Здесь появится ответ от YandexGPT</h3>
+                        <p>Начните с отправки запроса слева</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Панель истории -->
-    <div class="history-panel" id="historyPanel">
-        <div class="history-header">
-            <h3><i class="fas fa-history"></i> История запросов</h3>
-            <button class="btn btn-icon" id="closeHistory">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="history-content" id="historyContent">
-            <!-- История будет загружаться здесь -->
-        </div>
-    </div>
+    <div id="message" class="message"></div>
 
-    <!-- Overlay для истории -->
-    <div class="overlay" id="historyOverlay"></div>
-
-    <!-- Toast уведомления -->
-    <div id="toast" class="toast"></div>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script>
-        // ==================== КОНФИГУРАЦИЯ YANDEXGPT ====================
-        const YANDEX_CONFIG = {
+        // Конфигурация
+        const CONFIG = {
             folderId: "b1gem6hvga1n872g5iug",
-            apiKey: "AQVNxxfO7thv4q0zZt_tYo2gBHQfVRCz_oTgPO8B",
-            keyId: "aje72v7etm3fsamj6pmv"
+            apiKey: "AQVNxxfO7thv4q0zZt_tYo2gBHQfVRCz_oTgPO8B"
         };
 
-        // ==================== ПРОКСИ СЕРВЕРЫ (решение CORS проблемы) ====================
-        const PROXY_SERVERS = {
-            'cors-anywhere': 'https://cors-anywhere.herokuapp.com/',
-            'allorigins': 'https://api.allorigins.win/raw?url=',
-            'proxycurl': 'https://corsproxy.io/?',
-            'direct': ''
-        };
-
-        // Альтернативные прокси (на случай если один не работает)
-        const BACKUP_PROXIES = [
-            'https://corsproxy.org/?',
-            'https://api.codetabs.com/v1/proxy?quest=',
-            'https://thingproxy.freeboard.io/fetch/'
-        ];
-
-        // ==================== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ ====================
-        const state = {
-            isProcessing: false,
-            currentResponse: "",
-            history: [],
-            conversationContext: [],
-            currentProxyIndex: 0,
-            proxies: [...BACKUP_PROXIES, PROXY_SERVERS['cors-anywhere'], PROXY_SERVERS['allorigins']]
-        };
-
-        // ==================== DOM ЭЛЕМЕНТЫ ====================
+        // Элементы
         const elements = {
             userInput: document.getElementById('userInput'),
             output: document.getElementById('output'),
             sendBtn: document.getElementById('sendBtn'),
-            copyOutputBtn: document.getElementById('copyOutput'),
-            clearInputBtn: document.getElementById('clearInput'),
-            clearOutputBtn: document.getElementById('clearOutput'),
+            clearBtn: document.getElementById('clearBtn'),
             pasteBtn: document.getElementById('pasteBtn'),
-            formatBtn: document.getElementById('formatBtn'),
-            charCount: document.getElementById('charCount'),
-            statusIndicator: document.getElementById('statusIndicator'),
+            copyBtn: document.getElementById('copyBtn'),
+            saveBtn: document.getElementById('saveBtn'),
+            testBtn: document.getElementById('testBtn'),
+            status: document.getElementById('status'),
             statusText: document.getElementById('statusText'),
-            tokenInfo: document.getElementById('tokenInfo'),
-            modelSelect: document.getElementById('modelSelect'),
-            historyBtn: document.getElementById('historyBtn'),
-            historyPanel: document.getElementById('historyPanel'),
-            historyContent: document.getElementById('historyContent'),
-            closeHistory: document.getElementById('closeHistory'),
-            historyOverlay: document.getElementById('historyOverlay'),
-            toast: document.getElementById('toast'),
-            saveResponseBtn: document.getElementById('saveResponseBtn'),
-            exportBtn: document.getElementById('exportBtn'),
-            continueBtn: document.getElementById('continueBtn'),
-            expandOutput: document.getElementById('expandOutput'),
-            proxySelect: document.getElementById('proxySelect'),
-            testConnection: document.getElementById('testConnection'),
-            connectionStatus: document.getElementById('connectionStatus')
+            charCount: document.getElementById('charCount'),
+            proxyUrl: document.getElementById('proxyUrl'),
+            message: document.getElementById('message')
         };
 
-        // ==================== ПРЕСЕТЫ ДЛЯ БОЛЬШИХ ЗАПРОСОВ ====================
-        const PRESETS = {
-            architecture: `Создай полную архитектуру масштабируемого Telegram Mini App включая все компоненты, микросервисы, базу данных, кэширование, мониторинг и деплой. Предоставь полные конфигурационные файлы, диаграммы и примеры кода для каждого компонента.`,
-            
-            database: `Разработай оптимальную схему базы данных для приложения с миллионом пользователей. Включи миграции, индексы, репликацию, шардирование и стратегии бэкапов.`,
-            
-            payment: `Реализуй полную систему платежей с интеграцией ЮKassa, Stripe и криптовалют. Включи безопасность, вебхуки, обработку ошибок и мониторинг.`,
-            
-            scalability: `Предложи архитектурные решения для горизонтального масштабирования приложения под нагрузку в 100к RPS.`,
-            
-            security: `Разработай полный security audit план для приложения, включая penetration testing, vulnerability scanning и incident response.`
-        };
-
-        // ==================== УТИЛИТЫ ====================
-        function showToast(message, type = 'info', duration = 3000) {
-            elements.toast.textContent = message;
-            elements.toast.className = 'toast';
-            elements.toast.classList.add(`toast-${type}`, 'show');
+        // Утилиты
+        function showMessage(text, type = 'info', duration = 3000) {
+            elements.message.textContent = text;
+            elements.message.className = `message message-${type}`;
+            elements.message.classList.add('show');
             
             setTimeout(() => {
-                elements.toast.classList.remove('show');
+                elements.message.classList.remove('show');
             }, duration);
         }
 
-        function updateStatus(text, type = 'idle') {
-            elements.statusIndicator.className = `status-indicator status-${type}`;
+        function updateStatus(text, type = 'disconnected') {
+            elements.status.className = `status status-${type}`;
             elements.statusText.textContent = text;
         }
 
         function updateCharCount() {
             const length = elements.userInput.value.length;
             elements.charCount.textContent = `${length} символов`;
-            
-            // Расчет токенов
-            const estimatedTokens = Math.ceil(length / 3);
-            elements.tokenInfo.textContent = `Токены: ~${estimatedTokens}`;
         }
 
-        function formatCodeInResponse(text) {
-            // Форматирование блоков кода с подсветкой
-            text = text.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
-                const language = lang || 'javascript';
-                return `<div class="code-block" data-language="${language}">${code.trim()}</div>`;
-            });
-            
-            // Форматирование inline кода
+        function formatResponse(text) {
+            // Форматирование кода
+            text = text.replace(/```([\s\S]*?)```/g, '<div class="code-block">$1</div>');
             text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
-            
-            // Заголовки
-            text = text.replace(/^### (.+)$/gm, '<h3>$1</h3>');
-            text = text.replace(/^## (.+)$/gm, '<h2>$1</h2>');
-            text = text.replace(/^# (.+)$/gm, '<h1>$1</h1>');
-            
-            // Горизонтальные линии
-            text = text.replace(/^---$/gm, '<hr>');
-            text = text.replace(/^\*\*\*$/gm, '<hr>');
-            
-            // Жирный текст
-            text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-            
-            // Курсив
-            text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
-            
-            // Списки
-            text = text.replace(/^\* (.+)$/gm, '<li>$1</li>');
-            text = text.replace(/^\- (.+)$/gm, '<li>$1</li>');
-            text = text.replace(/^\d+\. (.+)$/gm, '<li>$1</li>');
-            
-            // Абзацы
             text = text.replace(/\n\n/g, '</p><p>');
             text = text.replace(/\n/g, '<br>');
-            
             return `<p>${text}</p>`;
         }
 
-        // ==================== ПРОКСИ РЕШЕНИЕ ДЛЯ CORS ====================
-        async function callYandexGPTWithProxy(query, proxyUrl) {
-            const model = elements.modelSelect.value;
-            
-            const requestBody = {
-                modelUri: `gpt://${YANDEX_CONFIG.folderId}/${model}`,
-                completionOptions: {
-                    stream: false,
-                    temperature: 0.3,
-                    maxTokens: 8000  // Увеличен лимит токенов
-                },
-                messages: [
-                    {
-                        role: "system",
-                        text: `Ты эксперт по разработке Telegram Mini Apps. Отвечай максимально подробно и полно. 
-Не ограничивай размер ответа. Предоставляй полные примеры кода, даже если они большие. 
-Используй markdown для форматирования. Разбивай сложные темы на секции с заголовками.`
-                    },
-                    {
-                        role: "user",
-                        text: query
-                    }
-                ]
-            };
-            
-            const yandexUrl = 'https://llm.api.cloud.yandex.net/foundationModels/v1/completion';
-            const targetUrl = proxyUrl ? proxyUrl + encodeURIComponent(yandexUrl) : yandexUrl;
-            
-            console.log('Using proxy:', proxyUrl || 'Direct');
-            console.log('Target URL:', targetUrl);
+        // Проверка прокси
+        async function testConnection() {
+            updateStatus('Проверка подключения...', 'loading');
             
             try {
-                const response = await fetch(targetUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Api-Key ${YANDEX_CONFIG.apiKey}`,
-                        'x-folder-id': YANDEX_CONFIG.folderId,
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(requestBody),
-                    mode: 'cors'
+                const proxyUrl = elements.proxyUrl.value;
+                const response = await fetch(proxyUrl + '/test', {
+                    method: 'GET'
                 });
                 
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    updateStatus(`Подключено: ${data.status}`, 'connected');
+                    showMessage('Прокси-сервер работает!', 'success');
+                    return true;
+                } else {
+                    throw new Error('Сервер не отвечает');
                 }
-                
-                return await response.json();
-                
             } catch (error) {
-                console.error('Proxy error:', error);
-                throw error;
+                updateStatus(`Ошибка: ${error.message}`, 'disconnected');
+                showMessage('Прокси-сервер не доступен. Запустите Python скрипт.', 'error');
+                return false;
             }
         }
 
-        async function callYandexGPT(query) {
-            if (state.isProcessing) return null;
-            
-            state.isProcessing = true;
-            updateStatus('Отправка через прокси...', 'loading');
-            
-            // Пробуем разные прокси по очереди
-            const maxRetries = state.proxies.length;
-            
-            for (let attempt = 0; attempt < maxRetries; attempt++) {
-                const proxyUrl = state.proxies[(state.currentProxyIndex + attempt) % state.proxies.length];
-                
-                try {
-                    console.log(`Attempt ${attempt + 1} with proxy:`, proxyUrl || 'Direct');
-                    
-                    const data = await callYandexGPTWithProxy(query, proxyUrl);
-                    
-                    // Успех - запоминаем этот прокси
-                    state.currentProxyIndex = (state.currentProxyIndex + attempt) % state.proxies.length;
-                    
-                    if (data.result && data.result.alternatives && data.result.alternatives[0]) {
-                        return data.result.alternatives[0].message.text;
-                    } else {
-                        throw new Error('Invalid response format');
-                    }
-                    
-                } catch (error) {
-                    console.error(`Proxy attempt ${attempt + 1} failed:`, error);
-                    
-                    if (attempt === maxRetries - 1) {
-                        // Все прокси не сработали
-                        throw new Error(`All proxies failed. Last error: ${error.message}`);
-                    }
-                    
-                    // Ждем немного перед следующей попыткой
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                }
-            }
-            
-            throw new Error('No working proxy found');
-        }
-
-        // ==================== ОБРАБОТЧИКИ СОБЫТИЙ ====================
-        elements.userInput.addEventListener('input', updateCharCount);
-        
-        elements.sendBtn.addEventListener('click', async () => {
+        // Отправка запроса
+        async function sendToYandexGPT() {
             const query = elements.userInput.value.trim();
             if (!query) {
-                showToast('Введите запрос!', 'error');
+                showMessage('Введите запрос!', 'error');
                 return;
             }
+
+            updateStatus('Отправка запроса...', 'loading');
             
             try {
-                updateStatus('Обработка запроса через прокси...', 'loading');
-                elements.continueBtn.style.display = 'none';
-                
-                const response = await callYandexGPT(query);
-                const formattedResponse = formatCodeInResponse(response);
-                
-                elements.output.innerHTML = formattedResponse;
-                state.currentResponse = response;
-                
-                // Сохраняем в историю
-                const historyItem = {
-                    id: Date.now(),
-                    query: query.substring(0, 200) + (query.length > 200 ? '...' : ''),
-                    fullQuery: query,
-                    response: response.substring(0, 500) + (response.length > 500 ? '...' : ''),
-                    fullResponse: response,
-                    timestamp: new Date().toLocaleString('ru-RU'),
-                    model: elements.modelSelect.value
-                };
-                
-                state.history.unshift(historyItem);
-                state.history = state.history.slice(0, 50);
-                localStorage.setItem('yandexgpt_history', JSON.stringify(state.history));
-                updateHistoryDisplay();
-                
-                updateStatus('Ответ получен!', 'idle');
-                showToast('Ответ успешно получен через прокси!', 'success', 4000);
-                
-                // Показываем кнопку продолжения для длинных ответов
-                if (response.length > 3000) {
-                    elements.continueBtn.style.display = 'inline-flex';
+                const proxyUrl = elements.proxyUrl.value;
+                const response = await fetch(proxyUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        query: query,
+                        folderId: CONFIG.folderId,
+                        apiKey: CONFIG.apiKey,
+                        model: 'yandexgpt-lite'
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
                 }
+
+                const data = await response.json();
                 
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                const formatted = formatResponse(data.response);
+                elements.output.innerHTML = formatted;
+                
+                updateStatus('Ответ получен!', 'connected');
+                showMessage('Ответ от YandexGPT получен!', 'success');
+
             } catch (error) {
-                console.error('Final error:', error);
+                console.error('Error:', error);
                 
-                // Fallback: демо-ответ с инструкциями
-                elements.output.innerHTML = `<div class="tip">
-                    <strong>⚠️ Ошибка подключения к YandexGPT</strong><br><br>
-                    <strong>Проблема:</strong> ${error.message}<br><br>
-                    <strong>Решение:</strong><br>
-                    1. <strong>Обновите страницу</strong> (F5)<br>
-                    2. <strong>Попробуйте другой прокси</strong> в настройках<br>
-                    3. <strong>Отключите блокировщик рекламы</strong> (uBlock, AdBlock)<br>
-                    4. <strong>Проверьте доступность прокси-серверов</strong><br><br>
-                    
-                    <strong>Временное решение:</strong><br>
-                    <button class="btn btn-primary" id="useDemo" style="margin: 10px 0;">
-                        <i class="fas fa-magic"></i> Использовать демо-режим
-                    </button>
-                    
-                    <strong>Настройки API:</strong><br>
-                    • Folder ID: ${YANDEX_CONFIG.folderId}<br>
-                    • API Key: ${YANDEX_CONFIG.apiKey.substring(0, 20)}...<br>
-                    • Key ID: ${YANDEX_CONFIG.keyId}
-                </div>`;
-                
-                // Добавляем обработчик для демо-режима
-                setTimeout(() => {
-                    const demoBtn = document.getElementById('useDemo');
-                    if (demoBtn) {
-                        demoBtn.addEventListener('click', () => {
-                            const demoResponse = `# Демо-ответ YandexGPT
+                // Fallback ответ
+                const fallbackResponse = `# Демо-режим
 
-## 📱 Telegram Mini App Архитектура
+Включен демо-режим так как прокси-сервер не доступен.
 
-### 1. Базовая структура
+## Для запуска YandexGPT:
+
+1. **Скачайте и запустите Python скрипт** (файл yandex_proxy.py)
+2. **Убедитесь что Python установлен** (python --version)
+3. **Запустите скрипт**: python yandex_proxy.py
+4. **Обновите страницу** и нажмите "Проверить подключение"
+
+## Пример кода для Telegram Mini App:
+
 \`\`\`html
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Telegram Mini App</title>
+    <title>Telegram App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-    <div id="app"></div>
+    <div id="app">
+        <h1>Telegram Mini App</h1>
+        <button onclick="sendToBot()">Нажми меня</button>
+    </div>
+    
     <script>
-        // Инициализация Telegram WebApp
         Telegram.WebApp.ready();
-        Telegram.WebApp.expand();
         
-        // Основная логика приложения
-        const app = {
-            init() {
-                this.user = Telegram.WebApp.initDataUnsafe.user;
-                this.render();
-            },
-            
-            render() {
-                document.getElementById('app').innerHTML = \`
-                    <h1>Привет, \${this.user?.first_name || 'Пользователь'}!</h1>
-                    <button onclick="Telegram.WebApp.sendData('hello')">
-                        Отправить данные
-                    </button>
-                \`;
-            }
-        };
-        
-        app.init();
+        function sendToBot() {
+            Telegram.WebApp.sendData('Hello from WebApp!');
+        }
     </script>
 </body>
 </html>
-\`\`\`
-
-### 2. Обработка данных от Telegram
-\`\`\`javascript
-// Валидация initData
-function validateInitData(initData) {
-    const params = new URLSearchParams(initData);
-    const hash = params.get('hash');
-    params.delete('hash');
-    
-    // Сортировка параметров
-    const sortedParams = Array.from(params.entries())
-        .sort(([a], [b]) => a.localeCompare(b))
-        .map(([k, v]) => \`\${k}=\${v}\`)
-        .join('\\n');
-    
-    // Проверка подписи
-    const secretKey = crypto.createHmac('sha256', 'WebAppData')
-        .update(process.env.BOT_TOKEN);
-    
-    const calculatedHash = crypto
-        .createHmac('sha256', secretKey)
-        .update(sortedParams)
-        .digest('hex');
-    
-    return calculatedHash === hash;
-}
-\`\`\`
-
-### 3. Безопасное взаимодействие с ботом
-\`\`\`javascript
-class TelegramAPI {
-    constructor(botToken) {
-        this.baseUrl = \`https://api.telegram.org/bot\${botToken}\`;
-    }
-    
-    async sendMessage(chatId, text, options = {}) {
-        const response = await fetch(\`\${this.baseUrl}/sendMessage\`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: chatId,
-                text,
-                parse_mode: 'HTML',
-                ...options
-            })
-        });
-        
-        return await response.json();
-    }
-    
-    async answerCallbackQuery(callbackQueryId, text) {
-        const response = await fetch(\`\${this.baseUrl}/answerCallbackQuery\`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                callback_query_id: callbackQueryId,
-                text,
-                show_alert: true
-            })
-        });
-        
-        return await response.json();
-    }
-}
-\`\`\`
-
-### 4. Масштабируемая архитектура
-\`\`\`yaml
-# docker-compose.yml
-version: '3.8'
-services:
-  webapp:
-    build: ./frontend
-    ports:
-      - "3000:80"
-    environment:
-      - API_URL=http://backend:3001
-      
-  backend:
-    build: ./backend
-    ports:
-      - "3001:3001"
-    environment:
-      - DATABASE_URL=postgres://user:pass@db:5432/app
-      - REDIS_URL=redis://redis:6379
-      
-  db:
-    image: postgres:14
-    environment:
-      - POSTGRES_DB=app
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=pass
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-      
-  redis:
-    image: redis:7-alpine
-    volumes:
-      - redis_data:/data
-
-volumes:
-  postgres_data:
-  redis_data:
-\`\`\`
-
-### 5. Оптимизация производительности
-\`\`\`javascript
-// Кэширование с Redis
-const redis = require('redis');
-const client = redis.createClient();
-
-async function getCachedUserData(userId) {
-    const cacheKey = \`user:\${userId}\`;
-    const cached = await client.get(cacheKey);
-    
-    if (cached) {
-        return JSON.parse(cached);
-    }
-    
-    // Получение из базы данных
-    const userData = await db.users.findUnique({
-        where: { id: userId },
-        include: { settings: true }
-    });
-    
-    // Кэширование на 5 минут
-    await client.setEx(cacheKey, 300, JSON.stringify(userData));
-    
-    return userData;
-}
-\`\`\`
-
----
-
-**Примечание:** Это демо-ответ. Для реальной работы с YandexGPT проверьте настройки прокси.`;
-                            
-                            elements.output.innerHTML = formatCodeInResponse(demoResponse);
-                            state.currentResponse = demoResponse;
-                            showToast('Загружен демо-режим', 'warning');
-                        });
-                    }
-                }, 100);
+\`\`\``;
                 
-                updateStatus('Ошибка подключения', 'error');
-                showToast('Проблема с прокси. Попробуйте другой сервер.', 'error', 5000);
-            } finally {
-                state.isProcessing = false;
+                elements.output.innerHTML = formatResponse(fallbackResponse);
+                updateStatus('Демо-режим', 'disconnected');
+                showMessage('Используется демо-режим. Запустите прокси.', 'warning');
             }
-        });
-        
-        // Тест подключения
-        elements.testConnection.addEventListener('click', async () => {
-            updateStatus('Тестирование прокси...', 'loading');
-            
-            const testQuery = "Привет! Это тестовый запрос.";
-            const selectedProxy = elements.proxySelect.value;
-            const proxyUrl = PROXY_SERVERS[selectedProxy] || '';
-            
-            try {
-                const data = await callYandexGPTWithProxy(testQuery, proxyUrl);
-                
-                elements.connectionStatus.innerHTML = `
-                    <div class="status-indicator status-idle">
-                        <span class="status-dot"></span>
-                        Прокси "${selectedProxy}" работает! Статус: OK
-                    </div>
-                `;
-                
-                showToast(`Прокси "${selectedProxy}" успешно подключен!`, 'success');
-                updateStatus('Готов к работе', 'idle');
-                
-            } catch (error) {
-                elements.connectionStatus.innerHTML = `
-                    <div class="status-indicator status-error">
-                        <span class="status-dot"></span>
-                        Прокси "${selectedProxy}" не работает: ${error.message}
-                    </div>
-                `;
-                
-                showToast(`Прокси "${selectedProxy}" не доступен`, 'error');
-                updateStatus('Ошибка теста', 'error');
-            }
-        });
+        }
 
-        // Остальные обработчики событий...
-        elements.continueBtn.addEventListener('click', async () => {
-            if (!state.currentResponse) return;
-            
-            try {
-                updateStatus('Продолжаю ответ...', 'loading');
-                
-                const continuationQuery = `Продолжи предыдущий ответ более подробно, добавь примеры кода и объяснения.`;
-                const response = await callYandexGPT(continuationQuery);
-                const formattedResponse = formatCodeInResponse(response);
-                
-                elements.output.innerHTML += '<hr style="margin: 20px 0; border-color: #e5e7eb;">' + formattedResponse;
-                state.currentResponse += '\n\n' + response;
-                
-                updateStatus('Ответ продолжен', 'idle');
-                showToast('Ответ продолжен!', 'success');
-                
-            } catch (error) {
-                showToast('Ошибка при продолжении ответа', 'error');
-                updateStatus('Ошибка', 'error');
-            }
-        });
+        // Обработчики событий
+        elements.userInput.addEventListener('input', updateCharCount);
         
-        elements.copyOutputBtn.addEventListener('click', () => {
-            const text = elements.output.innerText || state.currentResponse;
-            navigator.clipboard.writeText(text).then(() => {
-                showToast('Текст скопирован в буфер!', 'success');
-            });
-        });
+        elements.sendBtn.addEventListener('click', sendToYandexGPT);
         
-        elements.clearInputBtn.addEventListener('click', () => {
+        elements.clearBtn.addEventListener('click', () => {
             elements.userInput.value = '';
             updateCharCount();
-            showToast('Поле ввода очищено', 'info');
-        });
-        
-        elements.clearOutputBtn.addEventListener('click', () => {
-            elements.output.innerHTML = '';
-            state.currentResponse = '';
-            elements.continueBtn.style.display = 'none';
-            showToast('Ответ очищен', 'info');
+            showMessage('Поле очищено', 'info');
         });
         
         elements.pasteBtn.addEventListener('click', async () => {
@@ -1324,204 +549,46 @@ async function getCachedUserData(userId) {
                 const text = await navigator.clipboard.readText();
                 elements.userInput.value = text;
                 updateCharCount();
-                showToast('Текст вставлен из буфера', 'success');
-            } catch (err) {
-                showToast('Не удалось вставить текст', 'error');
+                showMessage('Текст вставлен', 'success');
+            } catch (error) {
+                showMessage('Не удалось вставить', 'error');
             }
         });
         
-        elements.formatBtn.addEventListener('click', () => {
-            const text = elements.userInput.value;
-            
-            // Простое автоформатирование для кода
-            if (text.includes('function') || text.includes('const ') || text.includes('import ')) {
-                elements.userInput.value = text
-                    .replace(/{/g, '{\n    ')
-                    .replace(/}/g, '\n}')
-                    .replace(/;/g, ';\n')
-                    .replace(/,/g, ',\n    ');
-                showToast('Код отформатирован', 'success');
-            } else {
-                showToast('Это не похоже на код для форматирования', 'info');
-            }
-            
-            updateCharCount();
-        });
-        
-        // Пресет кнопки
-        document.querySelectorAll('.preset-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const preset = btn.dataset.preset;
-                if (PRESETS[preset]) {
-                    elements.userInput.value = PRESETS[preset];
-                    updateCharCount();
-                    showToast(`Загружен пресет: ${btn.textContent.trim()}`, 'success');
-                    elements.userInput.focus();
-                }
+        elements.copyBtn.addEventListener('click', () => {
+            const text = elements.output.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                showMessage('Ответ скопирован!', 'success');
             });
         });
         
-        // История (функции)
-        function updateHistoryDisplay() {
-            elements.historyContent.innerHTML = state.history.map(item => `
-                <div class="history-item" data-id="${item.id}">
-                    <div class="query">${item.query}</div>
-                    <div class="date">${item.timestamp} • ${item.model}</div>
-                </div>
-            `).join('');
-        }
-        
-        function loadHistory() {
-            const saved = localStorage.getItem('yandexgpt_history');
-            if (saved) {
-                state.history = JSON.parse(saved);
-                updateHistoryDisplay();
-            }
-        }
-        
-        elements.historyBtn.addEventListener('click', () => {
-            elements.historyPanel.classList.add('show');
-            elements.historyOverlay.classList.add('show');
-        });
-        
-        elements.closeHistory.addEventListener('click', () => {
-            elements.historyPanel.classList.remove('show');
-            elements.historyOverlay.classList.remove('show');
-        });
-        
-        elements.historyOverlay.addEventListener('click', () => {
-            elements.historyPanel.classList.remove('show');
-            elements.historyOverlay.classList.remove('show');
-        });
-        
-        elements.historyContent.addEventListener('click', (e) => {
-            const historyItem = e.target.closest('.history-item');
-            if (historyItem) {
-                const id = parseInt(historyItem.dataset.id);
-                const item = state.history.find(h => h.id === id);
-                if (item) {
-                    elements.userInput.value = item.fullQuery;
-                    elements.output.innerHTML = formatCodeInResponse(item.fullResponse);
-                    state.currentResponse = item.fullResponse;
-                    updateCharCount();
-                    showToast('Запрос загружен из истории', 'success');
-                    
-                    elements.historyPanel.classList.remove('show');
-                    elements.historyOverlay.classList.remove('show');
-                }
-            }
-        });
-        
-        elements.saveResponseBtn.addEventListener('click', () => {
-            if (!state.currentResponse) {
-                showToast('Нет ответа для сохранения', 'error');
-                return;
-            }
-            
-            const blob = new Blob([state.currentResponse], { type: 'text/plain' });
+        elements.saveBtn.addEventListener('click', () => {
+            const text = elements.output.innerText;
+            const blob = new Blob([text], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `yandexgpt-response-${Date.now()}.txt`;
-            document.body.appendChild(a);
+            a.download = `yandexgpt_${Date.now()}.txt`;
             a.click();
-            document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            
-            showToast('Ответ сохранен в файл!', 'success');
+            showMessage('Файл сохранен!', 'success');
         });
         
-        elements.exportBtn.addEventListener('click', () => {
-            const content = `Запрос: ${elements.userInput.value}\n\n${'='.repeat(50)}\n\nОтвет:\n${state.currentResponse}`;
-            const blob = new Blob([content], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `telegram-dev-${Date.now()}.txt`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            showToast('Экспорт завершен!', 'success');
-        });
-        
-        elements.expandOutput.addEventListener('click', () => {
-            if (elements.output.style.position === 'fixed') {
-                elements.output.style.position = '';
-                elements.output.style.top = '';
-                elements.output.style.left = '';
-                elements.output.style.width = '';
-                elements.output.style.height = '';
-                elements.output.style.zIndex = '';
-                elements.output.style.background = '';
-                showToast('Режим просмотра отключен', 'info');
-            } else {
-                elements.output.style.position = 'fixed';
-                elements.output.style.top = '0';
-                elements.output.style.left = '0';
-                elements.output.style.width = '100vw';
-                elements.output.style.height = '100vh';
-                elements.output.style.zIndex = '1001';
-                elements.output.style.background = 'white';
-                elements.output.style.padding = '40px';
-                showToast('Режим полноэкранного просмотра', 'success');
-            }
-        });
+        elements.testBtn.addEventListener('click', testConnection);
         
         // Горячие клавиши
         document.addEventListener('keydown', (e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && !state.isProcessing) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
                 e.preventDefault();
                 elements.sendBtn.click();
             }
-            
-            if ((e.ctrlKey || e.metaKey) && e.key === 's' && state.currentResponse) {
-                e.preventDefault();
-                elements.saveResponseBtn.click();
-            }
-            
-            if ((e.ctrlKey || e.metaKey) && e.key === 'h') {
-                e.preventDefault();
-                elements.historyBtn.click();
-            }
-            
-            if (e.key === 'Escape' && elements.output.style.position === 'fixed') {
-                elements.expandOutput.click();
-            }
         });
 
-        // ==================== ИНИЦИАЛИЗАЦИЯ ====================
-        function init() {
+        // Автотест при загрузке
+        window.addEventListener('load', () => {
             updateCharCount();
-            loadHistory();
-            
-            elements.output.innerHTML = `<div class="tip">
-                <strong>🚀 YandexGPT помощник готов!</strong><br><br>
-                ✅ <strong>Прокси-решение</strong> для обхода CORS<br>
-                ✅ <strong>Без ограничений</strong> на размер запросов<br>
-                ✅ <strong>Автоматический выбор</strong> рабочего прокси<br>
-                ✅ <strong>Демо-режим</strong> на случай проблем<br><br>
-                <strong>Как работает:</strong><br>
-                1. Запрос отправляется через публичные прокси-серверы<br>
-                2. Если один прокси не работает - пробуем следующий<br>
-                3. Все данные шифруются и защищены<br>
-                4. История сохраняется локально в браузере<br><br>
-                <strong>Горячие клавиши:</strong><br>
-                • Ctrl+Enter - отправить запрос<br>
-                • Ctrl+S - сохранить ответ<br>
-                • Ctrl+H - открыть историю<br>
-                • Esc - выйти из полноэкранного режима<br><br>
-                <em>Нажмите "Тест подключения" чтобы проверить прокси</em>
-            </div>`;
-            
-            showToast('Система готова к работе с прокси!', 'success', 5000);
-            console.log('Initialized with config:', YANDEX_CONFIG);
-            console.log('Available proxies:', state.proxies);
-        }
-
-        // Запуск приложения
-        init();
+            setTimeout(() => testConnection(), 1000);
+        });
     </script>
 </body>
 </html>
